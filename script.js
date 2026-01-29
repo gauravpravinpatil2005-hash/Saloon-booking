@@ -12,10 +12,15 @@ const TIME_SLOTS = [
 
 // Initialize localStorage for bookings
 let bookings = JSON.parse(localStorage.getItem('salonBookings')) || [];
+bookings.forEach(b => {
+    if (!b.serviceStatus) b.serviceStatus = 'Booked';
+    if (!b.paymentStatus) b.paymentStatus = 'Pending';
+});
+
 let selectedServices = [];
 let selectedTime = null;
 let selectedDate = null;
-let selectedPayment = null;
+let selectedPayment = 'cash';
 
 // Initialize date picker
 const dateInput = document.getElementById('bookingDate');
@@ -24,7 +29,7 @@ dateInput.min = today;
 
 // Service selection (multiple)
 document.querySelectorAll('.service-item').forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         const serviceId = this.dataset.service;
         const serviceName = this.querySelector('h3').textContent;
         const servicePrice = parseInt(this.dataset.price);
@@ -77,7 +82,7 @@ function removeService(serviceId) {
 }
 
 // Date selection
-dateInput.addEventListener('change', function() {
+dateInput.addEventListener('change', function () {
     selectedDate = this.value;
     generateTimeSlots();
     updateSummary();
@@ -102,7 +107,7 @@ function generateTimeSlots() {
         if (bookedSlots.includes(time)) {
             slot.classList.add('unavailable');
         } else {
-            slot.addEventListener('click', function() {
+            slot.addEventListener('click', function () {
                 document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                 this.classList.add('selected');
                 selectedTime = time;
@@ -117,7 +122,7 @@ function generateTimeSlots() {
 
 // Payment method selection
 document.querySelectorAll('.payment-option').forEach(option => {
-    option.addEventListener('click', function() {
+    option.addEventListener('click', function () {
         document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
         this.classList.add('selected');
         selectedPayment = this.dataset.payment;
@@ -155,26 +160,24 @@ function updateSummary() {
 
 // Check if form is complete
 function checkFormComplete() {
-    const name = document.getElementById('customerName').value;
-    const phone = document.getElementById('customerPhone').value;
+    const name = document.getElementById('customerName').value.trim();
     const bookBtn = document.getElementById('bookBtn');
 
-    if (name && phone && selectedServices.length > 0 && selectedDate && selectedTime && selectedPayment) {
+    if (name && selectedServices.length > 0 && selectedDate && selectedTime) {
         bookBtn.disabled = false;
     } else {
         bookBtn.disabled = true;
     }
 }
 
+
+
 // Add input listeners
 document.getElementById('customerName').addEventListener('input', checkFormComplete);
-document.getElementById('customerPhone').addEventListener('input', checkFormComplete);
 
 // Book appointment
-document.getElementById('bookBtn').addEventListener('click', function() {
+document.getElementById('bookBtn').addEventListener('click', function () {
     const name = document.getElementById('customerName').value;
-    const phone = document.getElementById('customerPhone').value;
-    const email = document.getElementById('customerEmail').value;
 
     const totalPrice = selectedServices.reduce((sum, s) => sum + s.price, 0);
     const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0);
@@ -186,17 +189,18 @@ document.getElementById('bookBtn').addEventListener('click', function() {
     const booking = {
         id: bookingId,
         customerName: name,
-        customerPhone: phone,
-        customerEmail: email,
         services: selectedServices,
         date: selectedDate,
         time: selectedTime,
         totalPrice: totalPrice,
         totalDuration: totalDuration,
-        paymentMethod: selectedPayment || 'cash',
-        paymentStatus: selectedPayment === 'cash' ? 'Pending' : 'Paid',
+
+        paymentStatus: 'Pending',   // Pending → Done
+        serviceStatus: 'Booked',    // Booked → Completed
+
         timestamp: new Date().toISOString()
     };
+
 
     // Save to localStorage
     bookings.push(booking);
@@ -204,7 +208,7 @@ document.getElementById('bookBtn').addEventListener('click', function() {
 
     // Format WhatsApp message
     const servicesList = selectedServices.map(s => `  • ${s.name} (${s.duration} min) - ₹${s.price}`).join('\n');
-    
+
     const message = `🎉 *NEW BOOKING CONFIRMED*
 
 ━━━━━━━━━━━━━━━━━━━
@@ -215,8 +219,6 @@ document.getElementById('bookBtn').addEventListener('click', function() {
 
 👤 *Customer Information:*
 Name: ${name}
-Phone: ${phone}
-${email ? `Email: ${email}` : ''}
 
 💅 *Services Booked:*
 ${servicesList}
@@ -228,7 +230,7 @@ Duration: ${totalDuration} minutes
 
 💰 *Payment Details:*
 Total Amount: ₹${totalPrice}
-Payment Method: ${selectedPayment.toUpperCase()}
+Payment Method: Pay at Salon
 Status: ${selectedPayment === 'cash' ? '⏳ Pending (Pay at Salon)' : '✅ Paid'}
 
 ━━━━━━━━━━━━━━━━━━━
@@ -248,8 +250,6 @@ function closeModal() {
 
     // Reset form
     document.getElementById('customerName').value = '';
-    document.getElementById('customerPhone').value = '';
-    document.getElementById('customerEmail').value = '';
     dateInput.value = '';
     document.querySelectorAll('.service-item').forEach(s => s.classList.remove('selected'));
     document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
@@ -318,7 +318,6 @@ function renderBookingsTable() {
                 <tr>
                     <th>Booking ID</th>
                     <th>Customer</th>
-                    <th>Phone</th>
                     <th>Services</th>
                     <th>Date & Time</th>
                     <th>Amount</th>
@@ -331,7 +330,6 @@ function renderBookingsTable() {
                     <tr>
                         <td><strong>${booking.id}</strong></td>
                         <td>${booking.customerName}</td>
-                        <td>${booking.customerPhone}</td>
                         <td>
                             ${booking.services.map(s => s.name).join(', ')}
                             <br><small style="color: var(--text-light);">(${booking.totalDuration} min)</small>
@@ -341,14 +339,35 @@ function renderBookingsTable() {
                             <br><small>${booking.time}</small>
                         </td>
                         <td><strong>₹${booking.totalPrice}</strong></td>
-                        <td>${(booking.paymentMethod || 'cash').toUpperCase()}</td>
+                        <td>PAY AT SALON</td>
+
 
 
                         <td>
-                            <span class="status-badge status-${booking.paymentStatus.toLowerCase()}">
-                                ${booking.paymentStatus}
-                            </span>
-                        </td>
+  <span class="status-badge payment-${booking.paymentStatus.toLowerCase()}">
+    Payment: ${booking.paymentStatus}
+  </span>
+  <br>
+  <span class="status-badge service-${booking.serviceStatus.toLowerCase()}">
+    Service: ${booking.serviceStatus}
+  </span>
+
+  ${booking.paymentStatus === 'Pending'
+                        ? `<button class="action-btn" onclick="markPaymentDone('${booking.id}')">
+           Mark Payment Done
+         </button>`
+                        : ''
+                    }
+
+  ${booking.serviceStatus === 'Booked'
+                        ? `<button class="action-btn finish" onclick="markServiceCompleted('${booking.id}')">
+           Mark Completed
+         </button>`
+                        : ''
+  }
+</td>
+
+
                     </tr>
                 `).join('')}
             </tbody>
@@ -359,7 +378,7 @@ function renderBookingsTable() {
 }
 
 // Initialize on load
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Check if there's a hash to show dashboard
     if (window.location.hash === '#dashboard') {
         showDashboard();
@@ -379,16 +398,32 @@ function ownerLogin() {
 }
 
 
-window.addEventListener("load", () => {
-    if (localStorage.getItem("ownerLoggedIn") === "true") {
-        showDashboard();
-    }
-});
-
 
 function ownerLogout() {
     localStorage.removeItem("ownerLoggedIn");
     showCustomerView();
     alert("Logged out");
+}
+
+
+function markPaymentDone(bookingId) {
+    const booking = bookings.find(b => b.id === bookingId);
+    if (!booking) return;
+
+    booking.paymentStatus = 'Done';
+    localStorage.setItem('salonBookings', JSON.stringify(bookings));
+    updateDashboard();
+}
+
+
+function markServiceCompleted(bookingId) {
+    const booking = bookings.find(b => b.id === bookingId);
+    if (!booking) return;
+
+    booking.serviceStatus = 'Completed';
+    booking.paymentStatus = 'Done'; // auto-finish payment
+
+    localStorage.setItem('salonBookings', JSON.stringify(bookings));
+    updateDashboard();
 }
 

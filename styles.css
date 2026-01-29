@@ -582,10 +582,13 @@ tr:hover {
 }
 
 .status-badge {
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
     font-weight: 600;
+    margin: 3px 0;
+    letter-spacing: 0.3px;
 }
 
 .status-paid {
@@ -715,4 +718,64 @@ tr:hover {
     th, td {
         padding: 10px;
     }
+}
+
+.finish-btn {
+    margin-top: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.finish-btn:hover {
+    background: #15803d;
+}
+
+
+/* Payment */
+.payment-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.payment-done {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+/* Service */
+.service-booked {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.service-completed {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+/* Action buttons */
+.action-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #2563EB;
+    color: white;
+    transition: 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.action-btn.finish {
+    background: #16A34A;
 }
