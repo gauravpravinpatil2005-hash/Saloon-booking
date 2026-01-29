@@ -1,262 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luxe Salon - Book Your Appointment</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <!-- Customer Booking View -->
     <div id="customerView">
-        <a href="#" class="owner-link" onclick="showDashboard(); return false;">👑 Owner Dashboard</a>
-
-        <div class="container">
-            <header>
-                <h1>Luxe Salon</h1>
-                <p class="tagline">Elegance Redefined</p>
-            </header>
-
-            <div class="booking-wrapper">
-                <!-- Services Panel -->
-                <div class="services-panel">
-                    <h2 class="panel-title">Our Services</h2>
-                    <p style="color: var(--text-light); margin-bottom: 20px; font-size: 0.9rem;">Select multiple
-                        services for your appointment</p>
-
-                    <div class="service-category">
-                        <div class="category-name">Hair Services</div>
-                        <div class="service-item" data-service="haircut" data-price="1200" data-duration="45">
-                            <div class="service-info">
-                                <h3>Signature Haircut</h3>
-                                <p class="service-duration">45 minutes</p>
-                            </div>
-                            <div class="service-price">₹1,200</div>
-                        </div>
-                        <div class="service-item" data-service="coloring" data-price="3500" data-duration="120">
-                            <div class="service-info">
-                                <h3>Hair Coloring</h3>
-                                <p class="service-duration">2 hours</p>
-                            </div>
-                            <div class="service-price">₹3,500</div>
-                        </div>
-                        <div class="service-item" data-service="styling" data-price="1800" data-duration="60">
-                            <div class="service-info">
-                                <h3>Hair Styling</h3>
-                                <p class="service-duration">1 hour</p>
-                            </div>
-                            <div class="service-price">₹1,800</div>
-                        </div>
-                    </div>
-
-                    <div class="service-category">
-                        <div class="category-name">Spa & Treatments</div>
-                        <div class="service-item" data-service="facial" data-price="2500" data-duration="60">
-                            <div class="service-info">
-                                <h3>Luxury Facial</h3>
-                                <p class="service-duration">1 hour</p>
-                            </div>
-                            <div class="service-price">₹2,500</div>
-                        </div>
-                        <div class="service-item" data-service="massage" data-price="3000" data-duration="90">
-                            <div class="service-info">
-                                <h3>Aromatherapy Massage</h3>
-                                <p class="service-duration">1.5 hours</p>
-                            </div>
-                            <div class="service-price">₹3,000</div>
-                        </div>
-                    </div>
-
-                    <div class="service-category">
-                        <div class="category-name">Nail Care</div>
-                        <div class="service-item" data-service="manicure" data-price="800" data-duration="45">
-                            <div class="service-info">
-                                <h3>Luxury Manicure</h3>
-                                <p class="service-duration">45 minutes</p>
-                            </div>
-                            <div class="service-price">₹800</div>
-                        </div>
-                        <div class="service-item" data-service="pedicure" data-price="1000" data-duration="60">
-                            <div class="service-info">
-                                <h3>Spa Pedicure</h3>
-                                <p class="service-duration">1 hour</p>
-                            </div>
-                            <div class="service-price">₹1,000</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Booking Form -->
-                <div class="booking-form">
-                    <h2 class="panel-title">Book Your Appointment</h2>
-
-                    <div class="form-section" id="selectedServicesSection" style="display: none;">
-                        <label class="form-label">Selected Services</label>
-                        <div class="selected-services-list" id="selectedServicesList"></div>
-                    </div>
-
-                    <div class="form-section">
-                        <label class="form-label">Your Name</label>
-                        <input type="text" class="form-input" id="customerName" placeholder="Enter your full name"
-                            required>
-                    </div>
-
-                    <div class="form-section">
-                        <label class="form-label">Phone Number (WhatsApp)</label>
-                        <input type="tel" class="form-input" id="customerPhone" placeholder="+91 XXXXX XXXXX" required>
-                    </div>
-
-                    <div class="form-section">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" id="customerEmail" placeholder="your@email.com">
-                    </div>
-
-                    <div class="form-section">
-                        <label class="form-label">Select Date & Time</label>
-                        <div class="date-time-grid">
-                            <input type="date" class="form-input" id="bookingDate" required>
-                            <div></div>
-                        </div>
-                        <div class="time-slots" id="timeSlots"></div>
-                    </div>
-
-                    <div class="summary-box" id="summaryBox" style="display: none;">
-                        <div class="summary-item">
-                            <span>Services:</span>
-                            <span id="summaryServiceCount">0</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Total Duration:</span>
-                            <span id="summaryDuration">0 min</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Date & Time:</span>
-                            <span id="summaryDateTime">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Total Amount:</span>
-                            <span id="summaryPrice">₹0</span>
-                        </div>
-                    </div>
-
-                    <div class="payment-section">
-                        <label class="form-label">Payment Method</label>
-                        <div class="payment-options">
-                            <div class="payment-option" data-payment="upi">
-                                <div class="payment-option-icon">📱</div>
-                                <div class="payment-option-name">UPI / PhonePe</div>
-                            </div>
-                            <div class="payment-option" data-payment="card">
-                                <div class="payment-option-icon">💳</div>
-                                <div class="payment-option-name">Credit/Debit Card</div>
-                            </div>
-                            <div class="payment-option" data-payment="cash">
-                                <div class="payment-option-icon">💵</div>
-                                <div class="payment-option-name">Pay at Salon</div>
-                            </div>
-                            <div class="payment-option" data-payment="wallet">
-                                <div class="payment-option-icon">👛</div>
-                                <div class="payment-option-name">Paytm/Wallet</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="submit-btn" id="bookBtn" enable>Proceed to Payment & Book</button>
-
-                    <div class="whatsapp-notice">
-                        <svg viewBox="0 0 24 24" fill="currentColor" style="color: #25D366;">
-                            <path
-                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                        </svg>
-                        Confirmation sent to owner via WhatsApp
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Owner Dashboard View -->
-    <div id="ownerView" class="dashboard">
-        <div class="container">
-            <div class="dashboard-header">
-                <div>
-                    <h1 style="margin-bottom: 5px;">Owner Dashboard</h1>
-                    <p class="tagline" style="letter-spacing: 1px;">Manage Your Bookings</p>
-                </div>
-                <button class="back-btn" onclick="showCustomerView()">← Back to Booking</button>
-            </div>
-
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <div class="stat-value" id="totalBookings">0</div>
-                    <div class="stat-label">Total Bookings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="todayBookings">0</div>
-                    <div class="stat-label">Today's Bookings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="totalRevenue">₹0</div>
-                    <div class="stat-label">Total Revenue</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="pendingPayments">0</div>
-                    <div class="stat-label">Pending Payments</div>
-                </div>
-            </div>
-
-            <div class="bookings-table">
-                <h2 class="panel-title">All Bookings</h2>
-                <div id="bookingsTableContainer"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="success-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
-            <h2>Booking Confirmed!</h2>
-            <p>Your appointment has been successfully booked and confirmed. The salon owner has been notified via
-                WhatsApp with your complete booking details.</p>
-            <div style="background: var(--bg-cream); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                <strong>Booking ID:</strong> <span id="bookingIdDisplay"></span>
-            </div>
-            <button class="close-btn" onclick="closeModal()">Done</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxe Salon - Book Your Appointment</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-    <!-- Customer Booking View -->
-    <div id="customerView">
-
+        
         <a href="#" class="owner-link" onclick="ownerLogin(); return false;">
             👑 Owner Dashboard
         </a>
@@ -272,9 +26,8 @@
                 <!-- Services Panel -->
                 <div class="services-panel">
                     <h2 class="panel-title">Our Services</h2>
-                    <p style="color: var(--text-light); margin-bottom: 20px; font-size: 0.9rem;">Select multiple
-                        services for your appointment</p>
-
+                    <p style="color: var(--text-light); margin-bottom: 20px; font-size: 0.9rem;">Select multiple services for your appointment</p>
+                    
                     <div class="service-category">
                         <div class="category-name">Hair Services</div>
                         <div class="service-item" data-service="haircut" data-price="1200" data-duration="45">
@@ -348,8 +101,7 @@
 
                     <div class="form-section">
                         <label class="form-label">Your Name</label>
-                        <input type="text" class="form-input" id="customerName" placeholder="Enter your full name"
-                            required>
+                        <input type="text" class="form-input" id="customerName" placeholder="Enter your full name" required>
                     </div>
 
                     <div class="form-section">
@@ -416,8 +168,7 @@
 
                     <div class="whatsapp-notice">
                         <svg viewBox="0 0 24 24" fill="currentColor" style="color: #25D366;">
-                            <path
-                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                         </svg>
                         Confirmation sent to owner via WhatsApp
                     </div>
@@ -473,8 +224,7 @@
                 </svg>
             </div>
             <h2>Booking Confirmed!</h2>
-            <p>Your appointment has been successfully booked and confirmed. The salon owner has been notified via
-                WhatsApp with your complete booking details.</p>
+            <p>Your appointment has been successfully booked and confirmed. The salon owner has been notified via WhatsApp with your complete booking details.</p>
             <div style="background: var(--bg-cream); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                 <strong>Booking ID:</strong> <span id="bookingIdDisplay"></span>
             </div>
@@ -484,5 +234,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
